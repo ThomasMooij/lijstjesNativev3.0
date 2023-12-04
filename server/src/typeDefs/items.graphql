@@ -1,0 +1,14 @@
+type Item { 
+  name: String!,
+  price: Float, 
+  user: User!, 
+  list: List!, 
+}
+
+type Query{
+  getListItems(id: ID!) : Item
+}
+
+type Mutation{
+  createItem(name: String!, price: Float, user: ID!, list: ID!) : Item
+}

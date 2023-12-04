@@ -1,0 +1,20 @@
+type Recipe {
+  name: String!
+  userId: User!
+  savedIds: [User]
+  items: [Item]
+  videoURL: string!,
+  mainPicturePath: string, 
+  pictureArray: [string]
+}
+
+type Query {
+  getUserRecipes(id: ID!): [Recipe]
+  getSingleRecipe(id: ID!): Recipe
+  getRecipeByTag(tags: [String!]): [Recipe]
+  getFeedRecipes: [Recipe!]!
+}
+
+type Mutation {
+  createRecipe(name: String!, userId: ID!, savedIds: [ID], items: [ID],tags: [String]): Recipe
+}

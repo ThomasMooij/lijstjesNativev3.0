@@ -1,0 +1,8 @@
+- BACKEND
+## create input types for mutations
+## argument/parameter destructuring
+
+- FRONTEND
+## shake UI
+## password visibility
+## lost password functionality
