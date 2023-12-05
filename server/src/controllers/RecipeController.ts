@@ -37,13 +37,26 @@ import Recipe, { RecipeDocument } from '../models/Recipe';
       return [];
     }
   };
-  export const createRecipe = async (args: any): Promise<RecipeDocument | null> => {
+  export const createRecipe = async (input: any): Promise<RecipeDocument | null> => {
     try {
-      console.log(args)
-      const newRecipe = await Recipe.create(args);
+      const { name, userId, savedIds, items, videoURL, mainPicturePath, pictureArray } = input;
+
+      //IF USERID IS LOGGEDIN USER AND SUCH
+
+      const newRecipe = await Recipe.create({
+        name,
+        userId,
+        savedIds,
+        items,
+        videoUrl: videoURL, 
+        mainPicturePath,
+        pictureArray
+      });
+  
       return newRecipe;
     } catch (error) {
       console.error('Fout bij het maken van recept:', error);
       return null;
     }
   };
+  

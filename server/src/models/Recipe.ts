@@ -31,7 +31,6 @@ const RecipeSchema: Schema = new Schema({
     items: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Item",
-        required: true
     }],
     videoUrl: {
         type: String,
@@ -39,7 +38,6 @@ const RecipeSchema: Schema = new Schema({
     },
     mainPicturePath: {
         type: String,
-        required: true
     },
     pictureArray: [{
         type: String,

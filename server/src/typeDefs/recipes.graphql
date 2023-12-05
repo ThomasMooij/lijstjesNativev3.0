@@ -1,11 +1,21 @@
+input CreateRecipeInput{
+  name: String!, 
+  userId: ID!, 
+  savedIds: [ID], 
+  items: [ID],
+  videoURL: String!, 
+  mainPicturePath: String, 
+  pictureArray: [String]
+}
+
 type Recipe {
   name: String!
   userId: User!
   savedIds: [User]
   items: [Item]
-  videoURL: string!,
-  mainPicturePath: string, 
-  pictureArray: [string]
+  videoURL: String!,
+  mainPicturePath: String, 
+  pictureArray: [String]
 }
 
 type Query {
@@ -16,5 +26,5 @@ type Query {
 }
 
 type Mutation {
-  createRecipe(name: String!, userId: ID!, savedIds: [ID], items: [ID],tags: [String]): Recipe
+  createRecipe(input: CreateRecipeInput!): Recipe
 }
