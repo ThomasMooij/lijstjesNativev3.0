@@ -4,10 +4,8 @@ import User from '../models/User';
 import { ListArgs } from '../resolvers/listResolver';
 
 export const createList = async (input: ListArgs) => {
-
   try{
     // token validation
-
     const {title, items, user} = input
     console.log(title)
 
@@ -41,7 +39,9 @@ export const createList = async (input: ListArgs) => {
 };
 export const getAllLists = async (userId: mongoose.Types.ObjectId) => {
   try {
-    const lists = await List.find({ userId }); 
+    console.log({userId})
+    const lists = await List.find({userId}); 
+    console.log(lists)
     return lists;
   } catch (error: any) {
     throw new Error('Error fetching lists: ' + error.message);

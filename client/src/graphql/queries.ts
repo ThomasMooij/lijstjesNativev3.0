@@ -5,9 +5,9 @@ export const GET_ALL_LISTS = gql`
     getAllLists(userId: $userId) {
       _id
       title
-      date # Add the appropriate date field from your schema
+      date
       items {
-        # Define fields for items
+       
       }
     }
   }
