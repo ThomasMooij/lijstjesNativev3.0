@@ -2,7 +2,10 @@ import mongoose, { Schema } from 'mongoose';
 
 export interface Item {
   name: string,
-  price: number,
+  price?: number,
+  amountKey: string,
+  amountValue: string,
+  payed: boolean,
   userId: mongoose.Types.ObjectId,
   listId: mongoose.Types.ObjectId,
 }
@@ -10,6 +13,9 @@ export interface Item {
   const ItemSchema: Schema = new Schema({
     name: { type: String, required: true },
     price: { type: Number, min: 0 },
+    amountKey: {type: String},
+    amountValue: {type: String},
+    payed: {type: Boolean},
     userId: {
       type: Schema.Types.ObjectId, 
       ref: 'User', 

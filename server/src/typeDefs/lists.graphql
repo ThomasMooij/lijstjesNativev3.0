@@ -4,7 +4,7 @@ type List {
   """ date taken from createdAt property in dd-mm-yyyy format """
   date: String!
   items: [Item]
-  user: User!
+  userId: User!
 }
 
 type Query {
@@ -12,6 +12,13 @@ type Query {
   getAllLists(userId: ID!): [List]
 }
 
+input CreateListInput {
+  title: String!
+  userId: ID!
+  items: [ID!]
+  participants: [ID]
+}
+
 type Mutation {
-  createList(title: String!, userId: ID!): List
+  createList(input: CreateListInput!): List
 }

@@ -1,16 +1,17 @@
 import mongoose from 'mongoose';
-import { getUserById, getAllUsers, create, login, getUserFriends } from '../controllers/UserController';
+import { getUserById, getAllUsers, login, getUserFriends, createUser } from '../controllers/UserController';
 import { getAllLists } from '../controllers/ListController';
 import notFound from './graphqlErrors/notFound';
 
 
-interface UserArgs {
+export interface UserArgs {
   id:mongoose.Types.ObjectId;
   firstName: string;
   lastName: string;
   email: string;
   password: string;
   friends: [mongoose.Types.ObjectId];
+  lists:[mongoose.Types.ObjectId];
 }
 
  const userResolvers = {
@@ -27,7 +28,14 @@ interface UserArgs {
   },
   //MUTATIONS
   Mutation: {
-    createUser: (parent: any, args: UserArgs) => create(args.firstName, args.lastName, args.email, args.password),
+    createUser: async (parent: any, {input}: {input: UserArgs}) => {
+      try{
+        const createdUser = await createUser(input);
+        return createUser
+      }catch({message} : any){
+        throw new Error('Error creating user:' + message)
+      }
+    },
     loginUser: (parent: any, args: UserArgs) => login(args.email, args.password),
   },
 

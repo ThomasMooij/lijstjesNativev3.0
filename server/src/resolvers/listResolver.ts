@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 import { getListById, getAllLists, createList } from '../controllers/ListController';
-import {Item} from "./itemResolver"
-
+import { getItemsByListId } from '../controllers/ItemController';
 
 export interface ListArgs {
+  id:mongoose.Types.ObjectId;
   title: string;
-  items?: [Item];
-  userId: mongoose.Types.ObjectId
+  items?: [mongoose.Types.ObjectId] | undefined;//ID ???
+  user: mongoose.Types.ObjectId
   createdAt: string,
   updatedAt:string
 }
@@ -19,13 +19,18 @@ const listResolvers = {
   },
   //MUTATIONS
   Mutation: {
-    createList: (parent : any, args : ListArgs) => createList(args.title, args.items, args.userId),
-    // add participant?
-    // add item
+    createList: async (_parent: any, { input }: { input: ListArgs }) => {
+      try {
+        const createdList = await createList(input);
+        return createdList;
+      } catch (error: any) {
+        throw new Error('Error creating list: ' + error.message);
+      }
+    },
   },
-
   List : {
-    date: (list : ListArgs) => toIsoDate(list.createdAt) 
+    date: (list : ListArgs) => toIsoDate(list.createdAt),
+    items: (list: ListArgs) => getItemsByListId(list.id) // this function is not working help solve?
   }
 };
 

@@ -1,14 +1,27 @@
 type Item { 
+  _id: ID!
   name: String!,
   price: Float, 
-  user: User!, 
-  list: List!, 
+  userId: User!,
+  amountKey: String,
+  amountValue: String,
+  payed: Boolean, 
+  listId: List!, 
 }
 
 type Query{
   getListItems(id: ID!) : Item
 }
+input CreateItemInput {
+  name: String!,
+  price: Float, 
+  userId: [ID!]!,
+  amountKey: String,
+  amountValue: String,
+  payed: Boolean, 
+  listId: [ID!]!, 
+}
 
 type Mutation{
-  createItem(name: String!, price: Float, user: ID!, list: ID!) : Item
+  createItem(input: CreateItemInput!) : Item
 }

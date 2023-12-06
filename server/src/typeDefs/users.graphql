@@ -13,8 +13,17 @@ type Query {
   getAllUsers: [User]
 }
 
+input CreateUserInput {
+  firstName: String!
+  lastName: String!
+  password: String!
+  email: String!
+  lists: [ID!]
+  friends: [ID!]
+}
+
 type Mutation {
-  createUser(firstName: String!, lastName: String!, password: String!, email: String!): User
+  createUser(input: CreateUserInput!): User
   loginUser (email: String!, password: String!) : User
 }
  

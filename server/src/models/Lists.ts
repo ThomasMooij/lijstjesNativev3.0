@@ -5,7 +5,8 @@ import {Item} from '../models/Item'
 export interface ListDocument extends Document {
   title: string;
   userId: mongoose.Schema.Types.ObjectId;
-  items: Item[];
+  participants?:[mongoose.Schema.Types.ObjectId];
+  items?: Item[];
 }
 
 const ListSchema: Schema = new Schema({

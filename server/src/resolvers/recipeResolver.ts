@@ -11,7 +11,8 @@ const recipeResolvers = {
     },
     //MUTATIONS
     Mutation: {
-      createRecipe: (_parent: any,  input : any ) => createRecipe(input),
+      // INPUT ISSUES?
+      createRecipe: (_parent: any,  input : {name : any} ) => createRecipe({name}),
     }
   };
   

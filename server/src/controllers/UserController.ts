@@ -1,8 +1,12 @@
 import User, { UserDocument } from '../models/User'
 import mongoose from "mongoose";
+import { UserArgs } from '../resolvers/userResolver';
 
-export const create = async (firstName: string, lastName:string, email:string, password:string) : Promise<UserDocument>=> { 
+export const createUser = async (input: UserArgs) : Promise<UserDocument>=> { 
   try{
+
+    const {firstName, lastName, email, password } = input
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw new Error('Email already in use');
@@ -49,6 +53,7 @@ export const getUserById = async (id: mongoose.Types.ObjectId) => {
 
 export const getUserFriends = async (userId : mongoose.Types.ObjectId) => {
   try{
+    console.log(userId)
     const user = await User.findById(userId)
 
     if (!user) {
