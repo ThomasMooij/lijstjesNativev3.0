@@ -62,7 +62,7 @@ export const getItemsByListId = async (id: mongoose.Types.ObjectId) => {
   try{  
     const items = await Item.find({listId: id})
     return items;
-} catch({message} : any){
+    } catch({message} : any){
     throw new Error('Error getting item by listId:' + message)
-}
+    }
 }

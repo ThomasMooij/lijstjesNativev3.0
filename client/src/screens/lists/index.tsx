@@ -3,12 +3,13 @@ import React, { FC, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_LISTS } from '../../graphql/queries';
+import { ItemType } from '../../@types/ItemType';
 
 interface List {
   _id: string;
   title: string;
   date: string;
-  items: any[]; // Define the type of items here
+  items: ItemType[];
 }
 
 interface ListResponse {
@@ -16,7 +17,7 @@ interface ListResponse {
 }
 
 const Lists: FC = () => {
-  const userId = '6544bb812bd4e60dc13611d0'; // Replace with the actual user ID
+  const userId = '6544bb812bd4e60dc13611d0'; 
   const { loading, error, data } = useQuery<ListResponse>(GET_ALL_LISTS, {
     variables: { userId },
   });
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#ccc',
   },
-  // Add styles for Friends Lists section as needed
+ 
 });
 
 export default Lists;

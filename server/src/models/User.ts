@@ -9,9 +9,9 @@ export interface UserDocument {
     password: string;
     verified: boolean;
     picturePath: string;
-    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    lists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }],
-    recipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
+    friends:  mongoose.Schema.Types.ObjectId[],
+    lists:  mongoose.Schema.Types.ObjectId[],
+    recipes:  mongoose.Schema.Types.ObjectId[],
 }
 
 interface Methods {

@@ -24,16 +24,15 @@ export const login = async (email:string, password: string)  => {
         const user = await User.findOne({email})
         
         if (!user) throw new Error( "Email/Password mismatch!" );
-        const matched = await user.comparePassword(password)
+        const matched = await user.comparePassword(password);
         if (!matched) throw new Error( "Email/Password mismatch!");
-
           //add user token like on webpage
-
     }
     catch(error: any){
       throw new Error('Inloggen mislukt:'+ error.message)
     }
-}
+};
+
 export const getAllUsers = async () => {
   try {
     const users = await User.find();
@@ -51,21 +50,25 @@ export const getUserById = async (id: mongoose.Types.ObjectId) => {
   }
 };
 
-export const getUserFriends = async (userId : mongoose.Types.ObjectId) => {
+export const getUsersById = async (id: mongoose.Types.ObjectId) => {
   try{
-    console.log(userId)
-    const user = await User.findById(userId)
+    const users = await User.findById({id})
 
+  }catch({message}: any){
+    throw new Error('Error getting users by id:' + message)
+  }
+};
+
+export const getUserFriends = async (userId: mongoose.Types.ObjectId) => {
+  try {
+    const user = await User.findById(userId).populate('friends', 'firstName');
     if (!user) {
       throw new Error('User not found');
     }
-    const friendIds = user.friends
-    
-    const userFriends = await User.find ({_id: {$in: friendIds }})
-
-    return userFriends
-  }catch(error){
+    return user.friends;
+  } catch (error: any) {
     console.error('Error fetching user friends:', error);
     throw new Error('Error fetching user friends');
   }
-}
+};
+

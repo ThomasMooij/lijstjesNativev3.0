@@ -1,5 +1,6 @@
 import mongoose, { Types } from "mongoose";
 import {getRecipesByUserId, getRecipeById, getRecipesByTag, getFeedRecipes, createRecipe } from '../controllers/RecipeController'
+import { RecipeDocument } from "../models/Recipe";
 
 const recipeResolvers = {
     //QUERIES
@@ -12,7 +13,10 @@ const recipeResolvers = {
     //MUTATIONS
     Mutation: {
       // INPUT ISSUES?
-      createRecipe: (_parent: any,  input : {name : any} ) => createRecipe({name}),
+      createRecipe: async (_parent: any,  input : {input : RecipeDocument} ) => {
+        const createdRecipe = await createRecipe(input);
+        return createdRecipe
+      }
     }
   };
   

@@ -42,6 +42,7 @@ import Recipe, { RecipeDocument } from '../models/Recipe';
       const { name, userId, savedIds, items, videoURL, mainPicturePath, pictureArray } = input;
 
       //IF USERID IS LOGGEDIN USER AND SUCH
+      console.log(input)
 
       const newRecipe = await Recipe.create({
         name,

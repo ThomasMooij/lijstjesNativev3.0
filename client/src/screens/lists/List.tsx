@@ -11,18 +11,20 @@ interface Props {
 const List: FC<Props> = ({ list, expanded }) => {
   return (
     <View style={styles.listContainer}>
-      <Text style={styles.listTitle}>{list.title}</Text>
-      {expanded && (
-        <View style={styles.itemsContainer}>
-          {/* Display items associated with the list */}
-          {list.items?.map(item => (
-            <Text key={item._id}>{item.name}</Text>
-          ))}
-        </View>
-      )}
+      <Text>{list.title}</Text>
     </View>
   );
 };
+
+      // {/* <Text style={styles.listTitle}>{list.title}</Text>
+      // {expanded && (
+      //   <View style={styles.itemsContainer}>
+      //     {/* Display items associated with the list */}
+      //     {list.items?.map(item => (
+      //       <Text key={item._id}>{item.name}</Text>
+      //     ))}
+      //   </View>
+      // )} */}
 
 const styles = StyleSheet.create({
   listContainer: {

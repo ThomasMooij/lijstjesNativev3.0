@@ -29,13 +29,12 @@ const listResolvers = {
     },
   },
   List : {
-    date: (list : ListArgs) => toIsoDate(list.createdAt),
-    items: (list: ListArgs) => getItemsByListId(list.id) // this function is not working help solve?
+    date: (parent : ListArgs) => toIsoDate(parent.createdAt),
+    items: (parent: ListArgs) => getItemsByListId(parent.id) 
   }
 };
 
 function toIsoDate(value : string) {
-  console.log(value)
   const date = new Date(value);
   const year = date.getFullYear().toString().padStart(4, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0');

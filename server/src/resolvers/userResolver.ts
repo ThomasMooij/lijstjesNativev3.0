@@ -3,7 +3,6 @@ import { getUserById, getAllUsers, login, getUserFriends, createUser } from '../
 import { getAllLists } from '../controllers/ListController';
 import notFound from './graphqlErrors/notFound';
 
-
 export interface UserArgs {
   id:mongoose.Types.ObjectId;
   firstName: string;
@@ -18,9 +17,10 @@ export interface UserArgs {
   //QUERIES
   Query: {
     getUser: async (parent: any, args: UserArgs) =>{ 
-      const user = await getUserById(args.id)
+      const id = new mongoose.Types.ObjectId(args.id)
+      const user = await getUserById(id)
       if(!user){
-        throw notFound('User not find with id:'+ args.id)
+        throw notFound('User not found with id:'+ args.id)
       }
       return user
     },
@@ -28,20 +28,20 @@ export interface UserArgs {
   },
   //MUTATIONS
   Mutation: {
-    createUser: async (parent: any, {input}: {input: UserArgs}) => {
+    createUser: async (_parent: any, {input}: {input: UserArgs}) => {
       try{
         const createdUser = await createUser(input);
-        return createUser
+        return createdUser
       }catch({message} : any){
         throw new Error('Error creating user:' + message)
       }
     },
-    loginUser: (parent: any, args: UserArgs) => login(args.email, args.password),
+    loginUser: (_parent: any, args: UserArgs) => login(args.email, args.password),
   },
 
   User: {
-    lists : (user: UserArgs) => getAllLists(user.id),
-    friends : (user: UserArgs) => getUserFriends(user.id)
+    lists : (parent: UserArgs) => getAllLists(parent.id),
+    friends : (parent: UserArgs) => getUserFriends(parent.id)
   }
 };
 
