@@ -7,16 +7,6 @@ export const createList = async (input: ListArgs) => {
   try {
     const { title, items, userId } = input;
 
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: userId },
-      { $push: { lists: list._id } },
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      throw new Error('User not found');
-    }
-
     // trying to add automatic versioning if user already created a list with provided title
     let newTitle = title;
     let version = 0;
@@ -38,6 +28,18 @@ export const createList = async (input: ListArgs) => {
       items,
       userId,
     });
+
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      { $push: { lists: list._id } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+       // User not found, delete the newly created list
+      await List.deleteOne({ _id: list._id });
+      throw new Error('User not found');   
+    }
 
     await list.save();
 

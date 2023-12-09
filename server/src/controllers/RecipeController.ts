@@ -5,6 +5,7 @@ import User from "../models/User";
   export const getRecipeById = async (id: Types.ObjectId): Promise<RecipeDocument | null> => {
     try {
       const recipe = await Recipe.findById(id);
+      console.log(recipe)
       return recipe;
     } catch ({message}: any) {
       throw new Error('error getting recipe by Id:' + message)
@@ -12,7 +13,9 @@ import User from "../models/User";
   };
   export const getRecipesByUserId = async (userId: Types.ObjectId): Promise<RecipeDocument[]> => {
     try {
+      console.log(userId) //undefined
       const recipes = await Recipe.find({ userId });
+      console.log(recipes)
       return recipes;
     } catch ({message}: any) {
       throw new Error('error getting recipe by user Id:' + message)
