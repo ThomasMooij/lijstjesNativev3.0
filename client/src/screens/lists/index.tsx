@@ -2,7 +2,7 @@
 import React, { FC, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useQuery } from '@apollo/client';
-import { GET_ALL_LISTS } from '../../graphql/queries';
+import { GET_USER_LISTS } from '../../graphql/queries';
 import { ItemType } from '../../@types/ItemType';
 
 interface List {
@@ -18,10 +18,12 @@ interface ListResponse {
 
 const Lists: FC = () => {
   const userId = '6544bb812bd4e60dc13611d0'; 
-  const { loading, error, data } = useQuery<ListResponse>(GET_ALL_LISTS, {
+  const { loading, error, data } = useQuery<ListResponse>(GET_USER_LISTS, {
     variables: { userId },
   });
   const [expandedList, setExpandedList] = useState<string | null>(null);
+
+console.log(data)
 
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error.message}</Text>;

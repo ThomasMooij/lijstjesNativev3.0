@@ -4,39 +4,50 @@ import User from '../models/User';
 import { ListArgs } from '../resolvers/listResolver';
 
 export const createList = async (input: ListArgs) => {
-  try{
-    // token validation
-    const {title, items, user} = input
-    console.log(title)
-
-    const existingList = await List.findOne({ title, user });
-    if (existingList) {
-      throw new Error('A list with the same title already exists for this user');
-    }
-
-    const list = new List({ 
-      title, 
-      items, 
-      user: user
-    });
+  try {
+    const { title, items, userId } = input;
 
     const updatedUser = await User.findOneAndUpdate(
-      { _id: user },
+      { _id: userId },
       { $push: { lists: list._id } },
       { new: true }
     );
-    
-      if(!updatedUser){
-        throw new Error('User not found')
-      }
+
+    if (!updatedUser) {
+      throw new Error('User not found');
+    }
+
+    // trying to add automatic versioning if user already created a list with provided title
+    let newTitle = title;
+    let version = 0;
+
+    // Find all titles starting with the specified prefix
+    const existingLists = await List.find({ title: { $regex: new RegExp(`^${title}(\\.\\d+\\.\\d+)?$`, 'i') } });
+
+    if (existingLists.length > 0) {
+      const versions = existingLists.map((list) => {
+        const lastVersion = list.title.match(/(\d+\.\d+)$/);
+        return lastVersion ? parseInt(lastVersion[0].split('.')[1]) : 0;
+      });
+      version = Math.max(...versions) + 1;
+      newTitle = `${title}.${version}.0`;
+    }
+
+    const list = new List({
+      title: newTitle,
+      items,
+      userId,
+    });
 
     await list.save();
-    
+
     return list;
-  }catch(error: any){
-    throw new Error('Error creating list:' + error.message)
+  } catch (error: any) {
+    throw new Error('Error creating list:' + error.message);
   }
 };
+
+
 export const getAllLists = async (userId: mongoose.Types.ObjectId) => {
   try {
     console.log({userId})

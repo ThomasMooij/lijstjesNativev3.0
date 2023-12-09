@@ -1,12 +1,13 @@
 import mongoose from 'mongoose';
 import { getListById, getAllLists, createList } from '../controllers/ListController';
 import { getItemsByListId } from '../controllers/ItemController';
+import { getUserById } from '../controllers/UserController';
 
 export interface ListArgs {
   id:mongoose.Types.ObjectId;
   title: string;
   items?: [mongoose.Types.ObjectId] | undefined;//ID ???
-  user: mongoose.Types.ObjectId
+  userId: mongoose.Types.ObjectId
   createdAt: string,
   updatedAt:string
 }
@@ -30,7 +31,8 @@ const listResolvers = {
   },
   List : {
     date: (parent : ListArgs) => toIsoDate(parent.createdAt),
-    items: (parent: ListArgs) => getItemsByListId(parent.id) 
+    items: (parent: ListArgs) => getItemsByListId(parent.id),
+    userId: (parent: ListArgs) => getUserById(parent.userId)
   }
 };
 

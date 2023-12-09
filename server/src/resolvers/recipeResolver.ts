@@ -13,11 +13,12 @@ const recipeResolvers = {
     //MUTATIONS
     Mutation: {
       // INPUT ISSUES?
-      createRecipe: async (_parent: any,  input : {input : RecipeDocument} ) => {
+      createRecipe: async (_parent: any,  {input} : {input : RecipeDocument} ) => {
         const createdRecipe = await createRecipe(input);
         return createdRecipe
       }
-    }
+    },
+    
   };
   
   export default recipeResolvers

@@ -3,7 +3,7 @@ input CreateRecipeInput{
   userId: ID!, 
   savedIds: [ID], 
   items: [ID],
-  videoURL: String!, 
+  videoUrl: String!, 
   mainPicturePath: String, 
   pictureArray: [String]
 }
