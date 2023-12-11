@@ -9,6 +9,7 @@ input CreateRecipeInput{
 }
 
 type Recipe {
+  _id: ID!
   name: String!
   userId: User!
   savedIds: [User]

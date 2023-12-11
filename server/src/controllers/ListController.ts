@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import List, { ListDocument } from '../models/Lists';
 import User from '../models/User';
 import { ListArgs } from '../resolvers/listResolver';

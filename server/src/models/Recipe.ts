@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface RecipeDocument extends Document {
+    _id: mongoose.Types.ObjectId;
     name: string;
     userId: mongoose.Types.ObjectId;
     savedIds: mongoose.Types.ObjectId[];

@@ -6,14 +6,16 @@ type User {
   email: String!
   lists: [List!]
   friends: [User!]
+  savedLists: [List!]
+  savedRecipes: [Recipe!]
 }
 
 type Query {
-  getUser(id: ID!): User
+  getUser(_id: ID!): User
   getAllUsers: [User]
 }
 # Forgein fields should be removed from input
-# currently for testing but should never be added when creating a user
+# currently for testing but should never be added when creating an  user
 input CreateUserInput {
   firstName: String!
   lastName: String!
@@ -21,8 +23,8 @@ input CreateUserInput {
   email: String!
   lists: [ID!]
   friends: [ID!]
-  savedListsIds: [ID!]
-  savedRecipesIds: [ID!]
+  savedLists: [ID!]
+  savedRecipes: [ID!]
 }
 
 type Mutation {

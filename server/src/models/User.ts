@@ -1,20 +1,20 @@
 import mongoose from "mongoose";
-import { Model, ObjectId, Schema, model } from "mongoose";
+import { Model, Schema, model } from "mongoose";
 import { hash,compare } from "bcrypt";
 
 export interface UserDocument {
-    id: mongoose.Types.ObjectId
+    _id: mongoose.Types.ObjectId
     firstName: string;
     lastName: string;
     email: string;
     password: string;
     verified: boolean;
     picturePath: string;
-    friends:  mongoose.Schema.Types.ObjectId[],
-    lists:  mongoose.Schema.Types.ObjectId[],
-    recipes:  mongoose.Schema.Types.ObjectId[],
-    savedListsIds: mongoose.Schema.Types.ObjectId[],
-    savedRecipesIds:  mongoose.Schema.Types.ObjectId[],
+    friends: Schema.Types.ObjectId[],
+    lists: Schema.Types.ObjectId[],
+    recipes: Schema.Types.ObjectId[],
+    savedListsIds:Schema.Types.ObjectId[],
+    savedRecipesIds: Schema.Types.ObjectId[],
 }
 
 interface Methods {
