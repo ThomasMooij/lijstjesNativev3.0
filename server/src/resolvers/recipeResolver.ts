@@ -12,10 +12,9 @@ const recipeResolvers = {
         const userRecipes = await getRecipesByUserId(id);
         console.log(userRecipes)
         return userRecipes
-      },
-      
+      },    
       getSingleRecipe: (_parent: any, { id }: { id: Types.ObjectId }) => getRecipeById(id),
-      getRecipeByTag: (_parent: any, { tag }: { tag: string }) => getRecipesByTag(tag),
+      getRecipeByTag: (_parent: any, { tag }:  {tag: string }) => getRecipesByTag(tag),
       getFeedRecipes: () => getFeedRecipes(),
     },
     //MUTATIONS
@@ -25,6 +24,7 @@ const recipeResolvers = {
         return createdRecipe
       }
     },
+    // TYPE
     Recipe: {
       userId: (parent: RecipeDocument) => getUserById(parent.userId),
       items: (parent: RecipeDocument) => getItemsByListId(parent.id),
