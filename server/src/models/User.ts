@@ -3,6 +3,7 @@ import { Model, ObjectId, Schema, model } from "mongoose";
 import { hash,compare } from "bcrypt";
 
 export interface UserDocument {
+    id: mongoose.Types.ObjectId
     firstName: string;
     lastName: string;
     email: string;
@@ -12,6 +13,8 @@ export interface UserDocument {
     friends:  mongoose.Schema.Types.ObjectId[],
     lists:  mongoose.Schema.Types.ObjectId[],
     recipes:  mongoose.Schema.Types.ObjectId[],
+    savedListsIds: mongoose.Schema.Types.ObjectId[],
+    savedRecipesIds:  mongoose.Schema.Types.ObjectId[],
 }
 
 interface Methods {
@@ -61,6 +64,14 @@ export const UserSchema = new Schema<UserDocument>({
       ref: 'List' 
     }],
     recipes: [{ 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'Recipe' 
+    }],
+    savedListsIds: [{ 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'List' 
+    }],
+    savedRecipesIds: [{ 
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'Recipe' 
     }],    

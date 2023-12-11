@@ -1,17 +1,15 @@
 import User, { UserDocument } from '../models/User'
 import mongoose from "mongoose";
-import { UserArgs } from '../resolvers/userResolver';
 
-export const createUser = async (input: UserArgs) : Promise<UserDocument>=> { 
+export const createUser = async (input: UserDocument) : Promise<UserDocument>=> { 
   try{
-
     const {firstName, lastName, email, password } = input
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw new Error('Email already in use');
     }
-    const user = await User.create({ firstName, lastName, email, password });
+    const user = await User.create(input);
 
     return user;
   }
@@ -59,9 +57,9 @@ export const getUsersById = async (id: mongoose.Types.ObjectId) => {
   }
 };
 
-export const getUserFriends = async (userId: mongoose.Types.ObjectId) => {
+export const getUserFriends = async ({userId} : mongoose.Types.ObjectId) => {
   try {
-    const user = await User.findById(userId).populate('friends', 'firstName');
+    const user = await User.findById({userId}).populate('friends', 'firstName');
     if (!user) {
       throw new Error('User not found');
     }
