@@ -20,7 +20,7 @@ export const createUser = async (input: UserDocument) : Promise<UserDocument>=> 
 export const login = async (email:string, password: string)  => {
     try{
         const user = await User.findOne({email})
-        
+
         if (!user) throw new Error( "Email/Password mismatch!" );
         const matched = await user.comparePassword(password);
         if (!matched) throw new Error( "Email/Password mismatch!");
@@ -30,7 +30,6 @@ export const login = async (email:string, password: string)  => {
       throw new Error('Inloggen mislukt:'+ error.message)
     }
 };
-
 export const getAllUsers = async () => {
   try {
     const users = await User.find();
@@ -47,7 +46,6 @@ export const getUserById = async (id: mongoose.Types.ObjectId) => {
     throw new Error('Fout bij het ophalen van de gebruiker: '+ id + error.message);
   }
 };
-
 export const getUsersById = async (id: mongoose.Types.ObjectId) => {
   try{
     const users = await User.findById({id})

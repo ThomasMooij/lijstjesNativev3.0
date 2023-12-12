@@ -1,10 +1,53 @@
 import { gql } from '@apollo/client';
 
+// LIST QUERIES
 export const GET_USER_LISTS = gql`
-  query GetUserLists($userId: ID!) {
-    getAllLists(userId: $userId) {
-      _id
-      title
+query GetList($userId: ID!) {
+  getAllLists(userId: $userId) {
+    _id
+    title
+    items {
+      name
+    }
+  }
+}
+`;
+export const GET_USER_SAVED_LISTS = gql`
+  query Query($id: ID!) {
+    getUser(_id: $id) {
+      savedLists {
+        _id
+        date
+        title
+        userId {
+          firstName
+        }
+      }
     }
   }
 `;
+//RECIPE QUERIES
+export const GET_USER_RECIPES = gql`
+query Query($userId: ID!) {
+  getUserRecipes(id: $userId) {
+    _id
+    items {
+      name
+    }
+    name
+  }
+}
+`;
+export const GET_USER_SAVED_RECIPES = gql`
+query Query($id: ID!) {
+  getUser(_id: $id) {
+    savedRecipes {
+      _id
+      name
+      userId {
+        firstName
+      }
+    }
+  }
+}
+`

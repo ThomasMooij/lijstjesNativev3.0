@@ -48,13 +48,9 @@ export const createList = async (input: ListArgs) => {
     throw new Error('Error creating list:' + error.message);
   }
 };
-
-
 export const getAllLists = async (userId: mongoose.Types.ObjectId) => {
   try {
-    console.log({userId})
     const lists = await List.find({userId}); 
-    console.log(lists)
     return lists;
   } catch (error: any) {
     throw new Error('Error fetching lists: ' + error.message);
