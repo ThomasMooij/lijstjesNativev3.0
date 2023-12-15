@@ -1,5 +1,5 @@
 import mongoose, { Types } from "mongoose";
-import {getRecipesByUserId, getRecipeById, getRecipesByTag, getFeedRecipes, createRecipe } from '../controllers/RecipeController'
+import {getRecipesByUserId, getRecipeById,  createRecipe } from '../controllers/RecipeController'
 import { RecipeDocument } from "../models/Recipe";
 import { getUserById } from "../controllers/UserController";
 import { getItemsByListId } from "../controllers/ItemController";
@@ -14,8 +14,6 @@ const recipeResolvers = {
         return userRecipes
       },    
       getSingleRecipe: (_parent: any, { id }: { id: Types.ObjectId }) => getRecipeById(id),
-      getRecipeByTag: (_parent: any, { tag }:  {tag: string }) => getRecipesByTag(tag),
-      getFeedRecipes: () => getFeedRecipes(),
     },
     //MUTATIONS
     Mutation: {

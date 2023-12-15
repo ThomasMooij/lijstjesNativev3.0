@@ -1,45 +1,167 @@
-// List.tsx
-import React, { FC } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { FC, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import colors from '../../../utils/colors'; // Importing colors file
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ListType } from '../../@types/ListType';
 
+
 interface Props {
-  list: ListType;
-  expanded: boolean;
+  list: ListType; // Define ListType from the original component
+  expandedList: string | null; // Define the required props
+  setExpandedList: (listId: string | null) => void; // Define the required props
 }
 
-const List: FC<Props> = ({ list, expanded }) => {
+const List: FC<Props> = ({ list, expandedList, setExpandedList}) => {
   return (
-    <View style={styles.listContainer}>
-      <Text>{list.title}</Text>
+    <TouchableOpacity
+    key={list._id}
+    style={[
+      styles.listContainer,
+      expandedList === list._id && styles.expandedListContainer,
+    ]}
+    onPress={() => setExpandedList(expandedList === list._id ? null : list._id)}
+  >
+    <View style={styles.listHeader}>
+      <Text style={styles.listTitle}>{list.title}</Text>
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity style={styles.updateButton}>
+          <MaterialCommunityIcons name="pencil" size={20} color={colors.CONTRAST} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.deleteButton}>
+          <MaterialCommunityIcons name="delete" size={20} color={colors.CONTRAST} />
+        </TouchableOpacity>
+      </View>
     </View>
+    {expandedList === list._id && (
+      <View style={styles.expandedContent}>
+        <View style={styles.itemsContainer}>
+          {list.items && list.items.length > 0 ? (
+            list.items.map((item) => (
+              <Text key={item._id} style={styles.itemText}>
+                {item.name}
+              </Text>
+            ))
+          ) : (
+            <Text style={styles.noItemsText}>NO ITEMS ON THE LIST</Text>
+          )}
+        </View>
+        <View style={styles.bottomButtonsContainer}>
+          <TouchableOpacity style={styles.addListButton}>
+            <Text>Add Item</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.postButton}>
+            <Text>Add friend</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )}
+  </TouchableOpacity>
   );
 };
 
-      // {/* <Text style={styles.listTitle}>{list.title}</Text>
-      // {expanded && (
-      //   <View style={styles.itemsContainer}>
-      //     {/* Display items associated with the list */}
-      //     {list.items?.map(item => (
-      //       <Text key={item._id}>{item.name}</Text>
-      //     ))}
-      //   </View>
-      // )} */}
+     
 
 const styles = StyleSheet.create({
-  listContainer: {
-    backgroundColor: '#eee',
-    padding: 15,
-    borderRadius: 8,
-    marginBottom: 10,
+  container: {
+    flex: 1,
+    backgroundColor: colors.PRIMARY,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    flexDirection: 'row',
   },
-  listTitle: {
-    fontSize: 18,
+  listsContainer: {
+    marginBottom: 20,
+    width: '80%',
+  },
+  sectionTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: colors.CONTRAST,
+  },
+  listContainer: {
+    backgroundColor: colors.SECONDARY,
+    padding: 10,
+    marginBottom: 10,
+  },
+  expandedListContainer: {
+    backgroundColor: colors.OVERLAY,
+  },
+  listHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  listTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: colors.CONTRAST,
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+    paddingHorizontal: 10,
+  },
+  bottomButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  addListButton: {
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: colors.SECONDARY,
+  },
+  postButton: {
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: colors.SECONDARY,
+  },
+  updateButton: {
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: colors.SECONDARY,
+  },
+  deleteButton: {
+    marginLeft: 10,
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: colors.SECONDARY,
   },
   itemsContainer: {
-    marginTop: 10,
+    paddingVertical: 10,
+    paddingLeft: 20,
+    borderTopWidth: 1,
+    borderTopColor: colors.INACTIVE_CONTRAST,
+  },
+  expandedContent: {
+    // Define your expanded content styles here
+  },
+  itemText: {
+    // Define your item text styles here
+  },
+  noItemsText: {
+    // Define your no items text styles here
+  },
+  sideButtonsContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    paddingRight: 20,
+  },
+  createListButton: {
+    marginBottom: 20,
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: colors.PRIMARY,
+    alignItems: 'center',
+  },
+  friendsListButton: {
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: colors.PRIMARY,
+    alignItems: 'center',
   },
 });
 

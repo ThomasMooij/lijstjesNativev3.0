@@ -7,8 +7,10 @@ import AppLink from '../../components/utils/AppLink';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AuthStackParamList } from '../../@types/navigation';
 import colors from '../../../utils/colors';
-import { RecipeCreateSchema } from '../../../utils/FormikSchemas/RecipeCreateSchema';
 import AppImagePicker from '../../components/utils/AppImagePicker';
+import { ListCreateSchema } from '../../../utils/FormikSchemas/ListCreateSchema';
+import { CREATE_LIST_MUTATION } from '../../graphql/queries';
+import { useMutation } from '@apollo/client';
 
 interface Props {}
 
@@ -18,41 +20,48 @@ const initialValues = {
   videoUrl: '',
 };
 
-const CreateRecipe: FC<Props> = () => {
+const CreateList: FC<Props> = () => {
   const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
+
+  const userId = '6570be040604e11dbed840ec'; 
+
+  const [createListMutation] = useMutation(CREATE_LIST_MUTATION);
+
+  const handleCreateList = async (values: any) => {
+    try {
+      // Call the mutation with the required variables
+      await createListMutation({
+        variables: {
+          input: {
+            title: values.title,
+            userId: userId,
+          },
+        },
+      });
+
+      // After the list is created successfully, navigate back or perform necessary actions
+      navigation.goBack();
+    }catch (error) {
+      console.error('Error creating list:', error);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <Form
-        onSubmit={(values) => {
-          console.log(values);
-        }}
+        onSubmit={(values) => handleCreateList(values)}
         initialValues={initialValues}
-        validationSchema={RecipeCreateSchema} 
+        validationSchema={ListCreateSchema} 
       >
         <View style={styles.formContainer}>
           <AuthInput
-            name="name"
-            placeholder="Recipe Name"
-            label="Name"
+            name="title"
+            placeholder="Recipe title"
+            label="title"
             containerStyle={styles.marginBottom}
-          />
-          <AuthInput
-            name="videoUrl"
-            placeholder="Video URL"
-            label="Video URL"
-            containerStyle={styles.marginBottom}
-          />
-          <AuthInput
-            name="description"
-            placeholder="Description"
-            label="Description"
-            containerStyle={styles.marginBottom}
-            multiline={true}
-            numberOfLines={4} 
           />
 
-          <SubmitBtn title="Create Recipe" />
+          <SubmitBtn title="Create list" />
      
           <View style={styles.linkContainer}>
             <AppLink
@@ -90,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateRecipe;
+export default CreateList;

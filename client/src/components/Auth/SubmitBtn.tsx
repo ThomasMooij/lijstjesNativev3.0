@@ -1,4 +1,4 @@
-import AppButton from '../utils/AppButton';
+import AppButton from '../utils/buttons/AppButton';
 import {useFormikContext} from 'formik';
 import {FC} from 'react';
 import {StyleSheet} from 'react-native';

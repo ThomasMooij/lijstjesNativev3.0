@@ -18,22 +18,7 @@ import User from "../models/User";
       throw new Error('error getting recipe by user Id:' + message)
     }
   };
-  export const getRecipesByTag = async (tag: string): Promise<RecipeDocument[]> => {
-    try {
-      const recipes = await Recipe.find({ tags: tag });
-      return recipes;
-    } catch ({message} : any) {
-      throw new Error('error getting recipe by Id:' + message)
-    }
-  }; 
-  export const getFeedRecipes = async (): Promise<RecipeDocument[]> => {
-    try {
-      const recipes = await Recipe.find({});
-      return recipes;
-    } catch ({message}: any) {
-      throw new Error('error getting recipe by Id:' + message)
-    }
-  };
+
   export const createRecipe = async (input: RecipeDocument): Promise<RecipeDocument | null> => {
     try {
       const { name, userId, savedIds, items, videoUrl, mainPicturePath, pictureArray } = input;

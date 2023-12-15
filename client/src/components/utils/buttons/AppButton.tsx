@@ -1,4 +1,4 @@
-import colors from '../../../utils/colors';
+import colors from '../../../../utils/colors';
 import {FC} from 'react';
 import {Pressable, StyleSheet, Text} from 'react-native';
 

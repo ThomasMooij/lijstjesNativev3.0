@@ -26,6 +26,14 @@ export const GET_USER_SAVED_LISTS = gql`
     }
   }
 `;
+//CREATE LIST QUERIES
+export const CREATE_LIST_MUTATION = gql`
+  mutation Mutation($input: CreateListInput!) {
+  createList(input: $input) {
+    title
+  }
+}
+`;
 //RECIPE QUERIES
 export const GET_USER_RECIPES = gql`
 query Query($userId: ID!) {
