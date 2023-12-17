@@ -21,6 +21,10 @@ const initialValues = {
     password: '',
   };
 
+  const handleSignIn = async (values : any) => {
+    console.log(values)
+  }
+
   const SignIn: FC<Props> = props => {
 
     const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
@@ -29,6 +33,8 @@ const initialValues = {
         <Form
           onSubmit={values => {
             console.log(values);
+            handleSignIn(values)
+
           }}
           initialValues={initialValues}
           validationSchema={SignInSchema}>

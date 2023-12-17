@@ -24,8 +24,6 @@ import User from "../models/User";
       const { name, userId, savedIds, items, videoUrl, mainPicturePath, pictureArray } = input;
 
       //IF USERID IS LOGGEDIN USER AND SUCH
-      console.log(name)
-
       const newRecipe = await Recipe.create({
         name,
         userId,

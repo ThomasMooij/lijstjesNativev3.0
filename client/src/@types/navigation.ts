@@ -10,6 +10,15 @@ interface NewUserResponse {
     LostPassword: undefined;
     Verification: {userInfo: NewUserResponse};
   };
+
+  export type StackParamList = {
+    Lists: undefined, 
+    Recipes: undefined, 
+    Feed: undefined, 
+    CreateRecipe: undefined, 
+    CreateList: undefined, 
+
+  }
   
   export type TabStackParamList ={
     

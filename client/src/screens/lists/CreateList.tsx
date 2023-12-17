@@ -5,7 +5,7 @@ import SubmitBtn from '../../components/Auth/SubmitBtn';
 import Form from '../../components/Form';
 import AppLink from '../../components/utils/AppLink';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { AuthStackParamList } from '../../@types/navigation';
+import {StackParamList } from '../../@types/navigation';
 import colors from '../../../utils/colors';
 import AppImagePicker from '../../components/utils/AppImagePicker';
 import { ListCreateSchema } from '../../../utils/FormikSchemas/ListCreateSchema';
@@ -21,7 +21,7 @@ const initialValues = {
 };
 
 const CreateList: FC<Props> = () => {
-  const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
+  const navigation = useNavigation<NavigationProp<StackParamList>>();
 
   const userId = '6570be040604e11dbed840ec'; 
 
@@ -29,17 +29,16 @@ const CreateList: FC<Props> = () => {
 
   const handleCreateList = async (values: any) => {
     try {
-      // Call the mutation with the required variables
+      console.log("create list function with values:", values)
+    
       await createListMutation({
         variables: {
           input: {
-            title: values.title,
+            title: values.name,
             userId: userId,
           },
         },
       });
-
-      // After the list is created successfully, navigate back or perform necessary actions
       navigation.goBack();
     }catch (error) {
       console.error('Error creating list:', error);
@@ -49,14 +48,17 @@ const CreateList: FC<Props> = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Form
-        onSubmit={(values) => handleCreateList(values)}
+        onSubmit={values => {
+          console.log("create list onSubmit with values:", values)
+          handleCreateList(values)
+        } }
         initialValues={initialValues}
         validationSchema={ListCreateSchema} 
       >
         <View style={styles.formContainer}>
           <AuthInput
             name="title"
-            placeholder="Recipe title"
+            placeholder="Lists title"
             label="title"
             containerStyle={styles.marginBottom}
           />
