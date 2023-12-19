@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';  
 
-export interface Item {
+export interface ItemDocument {
+  _id: mongoose.Types.ObjectId
   name: string,
   price?: number,
   amountKey: string,
@@ -8,6 +9,7 @@ export interface Item {
   payed: boolean,
   userId: mongoose.Types.ObjectId,
   listId: mongoose.Types.ObjectId,
+  image: string;
 }
 
   const ItemSchema: Schema = new Schema({
@@ -25,8 +27,9 @@ export interface Item {
       type: Schema.Types.ObjectId, 
       ref: 'List', 
       required: true
-    }
+    },
+    image: { type: String },
   },{timestamps:true});
   
-  export default mongoose.model<Item>('Item', ItemSchema);
+  export default mongoose.model<ItemDocument>('Item', ItemSchema);
   

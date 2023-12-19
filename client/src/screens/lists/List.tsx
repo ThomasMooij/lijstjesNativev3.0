@@ -3,15 +3,21 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import colors from '../../../utils/colors'; // Importing colors file
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ListType } from '../../@types/ListType';
-
+import { useNavigation } from '@react-navigation/native';
 
 interface Props {
-  list: ListType; // Define ListType from the original component
-  expandedList: string | null; // Define the required props
-  setExpandedList: (listId: string | null) => void; // Define the required props
+  list: ListType; 
+  expandedList: string | null; 
+  setExpandedList: (listId: string | null) => void;
 }
 
 const List: FC<Props> = ({ list, expandedList, setExpandedList}) => {
+
+  const navigation = useNavigation<any>();
+
+  const handleCreateItem = async () => {
+    navigation.navigate('CreateItem', { listId: list._id }); 
+  }
   return (
     <TouchableOpacity
     key={list._id}
@@ -42,11 +48,13 @@ const List: FC<Props> = ({ list, expandedList, setExpandedList}) => {
               </Text>
             ))
           ) : (
-            <Text style={styles.noItemsText}>NO ITEMS ON THE LIST</Text>
+            <Text key="no-items" style={styles.noItemsText}>
+              NO ITEMS ON THE LIST
+            </Text>
           )}
         </View>
         <View style={styles.bottomButtonsContainer}>
-          <TouchableOpacity style={styles.addListButton}>
+          <TouchableOpacity onPress={handleCreateItem} style={styles.addListButton}>
             <Text>Add Item</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.postButton}>
@@ -58,8 +66,6 @@ const List: FC<Props> = ({ list, expandedList, setExpandedList}) => {
   </TouchableOpacity>
   );
 };
-
-     
 
 const styles = StyleSheet.create({
   container: {
@@ -138,7 +144,7 @@ const styles = StyleSheet.create({
     // Define your expanded content styles here
   },
   itemText: {
-    // Define your item text styles here
+    color: colors.SUCCESS
   },
   noItemsText: {
     // Define your no items text styles here

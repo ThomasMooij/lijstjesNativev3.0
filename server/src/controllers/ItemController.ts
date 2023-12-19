@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import Lists from "../models/Lists";
-import Item from "../models/Item";
-import { ItemArgs } from "../resolvers/itemResolver";
+import Item, { ItemDocument } from "../models/Item";
 
 export const getListItems = async (id: mongoose.Types.ObjectId) => {
 
@@ -20,7 +19,7 @@ try{
     console.log(error)
 }}
 
-export const createItem = async (input: ItemArgs) => {
+export const createItem = async (input: ItemDocument) => {
 
     const {
         name, 
@@ -28,8 +27,9 @@ export const createItem = async (input: ItemArgs) => {
         amountKey,
         amountValue,
         payed, 
-        user,
-        list 
+        userId,
+        listId,
+        image
     } = input
 
     try{
@@ -39,14 +39,15 @@ export const createItem = async (input: ItemArgs) => {
             amountKey,
             amountValue,
             payed,
-            user,
-            list,
+            userId,
+            listId,
+            image,
         })
 
         const savedItem = await item.save();
 
         const updatedList = await Lists.findByIdAndUpdate(
-            {_id: list},
+            {_id: listId},
             {$push: {items: savedItem._id}},
             {new: true}
         )

@@ -1,17 +1,8 @@
 import mongoose from "mongoose";
 import { createItem, getListItems } from "../controllers/ItemController";
-import { GraphQLError } from 'graphql';
-import { create } from "domain";
+import  { ItemDocument } from "../models/Item";
+import { getUserById } from "../controllers/UserController";
 
-export interface ItemArgs {
-    name: string,
-    price?: number,
-    amountKey: string,
-    amountValue: string,
-    payed: boolean,
-    user: mongoose.Types.ObjectId,
-    list: mongoose.Types.ObjectId,
-  }
 
 const itemResolvers = {
     //Queries
@@ -20,7 +11,7 @@ const itemResolvers = {
     },
     //MUTATIONS
     Mutation: {
-        createItem: async (parent : any, {input} : {input: ItemArgs}) => {
+        createItem: async (parent : any, {input} : {input: ItemDocument}) => {
             try{
                 const createdItem = await createItem(input);
                 return createdItem;
@@ -29,6 +20,9 @@ const itemResolvers = {
             }
         }
     },
+    Item:{
+        userId: (parent: ItemDocument) => getUserById(parent.userId),
+    }
 }   
 
 export default itemResolvers

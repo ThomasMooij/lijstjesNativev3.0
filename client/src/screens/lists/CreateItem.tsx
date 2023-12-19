@@ -1,22 +1,22 @@
 import React, { FC, useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { CREATE_LIST_MUTATION } from '../../graphql/queries';
+import { CREATE_ITEM_MUTATION } from '../../graphql/itemQueries';
 import { useMutation } from '@apollo/client';
 
-const CreateList: FC = () => {
+const CreateItem: FC = () => {
   const navigation = useNavigation();
   const userId = '6570be040604e11dbed840ec'; 
 
   const [listTitle, setListTitle] = useState('');
 
-  const [createListMutation] = useMutation(CREATE_LIST_MUTATION);
+  const [CreateItemMutation] = useMutation(CREATE_ITEM_MUTATION);
 
-  const handleCreateList = async () => {
+  const handleCreateItem = async () => {
     try {
       console.log("Submitting form with title:", listTitle);
 
-      await createListMutation({
+      await CreateItemMutation({
         variables: {
           input: {
             title: listTitle,
@@ -42,7 +42,7 @@ const CreateList: FC = () => {
           style={styles.input}
         />
 
-        <TouchableOpacity onPress={handleCreateList} style={styles.button}>
+        <TouchableOpacity onPress={handleCreateItem} style={styles.button}>
           <Text>Create list</Text>
         </TouchableOpacity>
 
@@ -83,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateList;
+export default CreateItem;

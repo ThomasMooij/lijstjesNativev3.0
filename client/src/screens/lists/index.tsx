@@ -33,7 +33,6 @@ const Lists: FC = () => {
     navigation.navigate('FriendsLists');
   };
 
-
   const lists = data?.getAllLists || [];
 
   return (

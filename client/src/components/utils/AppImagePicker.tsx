@@ -1,51 +1,91 @@
-import React, { FC } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import ImagePicker, { ImagePickerResponse } from 'react-native-image-picker';
-import {launchImageLibrary} from 'react-native-image-picker';
+import React, { FC, useState, useEffect } from 'react';
+import { TouchableOpacity, Image, StyleSheet, Platform, PermissionsAndroid, Alert } from 'react-native';
+import ImagePicker, { ImagePickerResponse, ImagePickerOptions } from 'react-native-image-picker';
+import colors from '../../../utils/colors'; // Importing colors file
 
-const ImagePickerComponent: FC = () => {
-  const selectImage = () => {
-    const options = {
-      mediaType: 'photo' as const,
+interface ImagePickerProps {
+  onImageSelected: (imageUri: string) => void;
+}
+
+const AppImagePicker: FC<ImagePickerProps> = ({ onImageSelected }) => {
+  const [selectedImage, setSelectedImage] = useState<string>('');
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS === 'android') {
+        await requestCameraPermission();
+      }
+    })();
+  }, []);
+
+  const requestCameraPermission = async () => {
+    try {
+      const rationale: PermissionsAndroid.PermissionStatus = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: 'Permission to access storage',
+          message: 'App needs access to your storage to upload images.',
+          buttonPositive: 'OK',
+        }
+      );
+
+      if (rationale !== PermissionsAndroid.RESULTS.GRANTED) {
+        Alert.alert('Permission denied.');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  const pickImage = () => {
+    const options: ImagePickerOptions = {
+      mediaType: 'photo',
       quality: 1,
     };
 
-    launchImageLibrary(options, (response: ImagePickerResponse) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        // Handle the selected image URI or data here
-        if (response.uri) {
-          console.log('Selected Image:', response.uri);
-          // You can store or further process the selected image data here
-        }
+    ImagePicker.launchImageLibrary(options, (response) => {
+      if (!response.didCancel && response.uri) {
+        const pickedImage = response as ImagePickerResponse;
+        setSelectedImage(pickedImage.uri);
+        onImageSelected(pickedImage.uri); 
       }
     });
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={selectImage}>
-        <Text>Select Image</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
+      {selectedImage ? (
+        <Image source={{ uri: selectedImage }} style={styles.imagePreview} />
+      ) : (
+        <Image source={require('../../assets/image-placeholder.png')} style={styles.imagePlaceholder} />
+      )}
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 20,
-  },
-  button: {
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: 'lightblue',
+  imagePicker: {
     alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors.INACTIVE_CONTRAST,
+    backgroundColor: colors.PRIMARY,
+    width: '100%',
+    height: 200,
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginBottom: 10,
+  },
+  imagePreview: {
+    width: '100%',
+    height: '100%',
+  },
+  imagePlaceholder: {
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
+    tintColor: colors.INACTIVE_CONTRAST,
   },
 });
 
-export default ImagePickerComponent;
+export default AppImagePicker;

@@ -6,6 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Recipes from '../screens/recipes';
 import CreateRecipe from '../screens/recipes/CreateRecipe';
 import CreateList from '../screens/lists/CreateList';
+import CreateItem from '../screens/lists/CreateItem';
 
 const Tab = createBottomTabNavigator();
 
@@ -62,6 +63,13 @@ const TabNavigator = () => {
       <Tab.Screen
         name="CreateList"
         component={CreateList}
+        options={{
+          tabBarButton: () => null, // Hide the tab button for CreateRecipe
+        }}
+      />
+          <Tab.Screen
+        name="CreateItem"
+        component={CreateItem}
         options={{
           tabBarButton: () => null, // Hide the tab button for CreateRecipe
         }}

@@ -26,7 +26,7 @@ export const GET_USER_SAVED_LISTS = gql`
     }
   }
 `;
-//CREATE LIST QUERIES
+//CREATE LIST Mutaion
 export const CREATE_LIST_MUTATION = gql`
   mutation Mutation($input: CreateListInput!) {
   createList(input: $input) {

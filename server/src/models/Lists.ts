@@ -1,12 +1,12 @@
 import mongoose, { Schema, Document } from 'mongoose'
-import {Item} from '../models/Item'
+import { ItemDocument} from '../models/Item'
 
 
 export interface ListDocument extends Document {
   title: string;
   userId: mongoose.Schema.Types.ObjectId;
   participants?:[mongoose.Schema.Types.ObjectId];
-  items?: Item[];
+  items?: ItemDocument[];
 }
 
 const ListSchema: Schema = new Schema({
