@@ -1,0 +1,30 @@
+- SERVER
+** cd naar server folder en run npm install
+** run npm start in server folder
+** via de url in de terminal kunt u de server testen
+
+- CLIENT
+## verplichte downloads:
+ # java JDK (https://oracle.com/nl/java/technologies/javase/jdk11-archive-downloads.html) (Moet java 11 zijn anders of moet de gradle version aanpassen (zie documentatie))
+ # node js (https://nodejs.org/en/download)
+ # android studio (https://developer.android.com/studio?gclid=Cj0KCQiAm4WsBhCiARIsAEJIEzULd64mO1x39ahisGDJKslDFBttxHMLUrusV_AIcwm2Z58kQU0mvboaAug8EALw_wcB&gclsrc=aw.ds)
+
+ ** Wanneer u android studio gedownload heeft navigeert u naar de device manager onder de more actions knop 
+ ** Creeer een nieuwe virtual device voor de telefoon
+ ** Tijdens het aanmaken van uw virtual device wordt er gevraagd een "system image" te downloaden.
+ ** download 'S' of 'R' system 
+ ** Finish setup
+ ** Let op de virtual device moet zichtbaar zijn in de device manager
+
+ ** CONFIGURE ANDRIOD HOME ENV VARIABLE
+ ** ga naar %LOCALAPPDATA%\Android\Sdk
+ ** in deze folder ga naar platform-tools
+ ** kopieer de link naar deze folder en ga naar de enviroment variables van uw laptop (edit enviroment variables)
+ ** edit de 'path' enviroment variable tussen uw 'Users variables' en verander deze naar de gekopieerde link
+ ** Ook moet u een nieuwe enviroment variable creeren en die ANDROID_HOME noemen. als path hiervoor moet u het pad naar java Sdk kopieren(de link die u gekopieerd en geplakt had maar dan zonder de platform-tools)
+
+** Nu kunt u in de client folder van de app npx react-native run-android uitvoeren en dan bouwt hij de app. Kies ANDROID als operating system
+
+
+
+## Zie documentatie: https://reactnative.dev/docs/environment-setup

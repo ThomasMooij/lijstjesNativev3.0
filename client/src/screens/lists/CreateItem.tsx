@@ -3,6 +3,7 @@ import { SafeAreaView, StyleSheet, View, Text, TextInput, TouchableOpacity } fro
 import { useNavigation } from '@react-navigation/native';
 import { CREATE_ITEM_MUTATION } from '../../graphql/itemQueries';
 import { useMutation } from '@apollo/client';
+import AppImagePicker from '../../components/utils/AppImagePicker';
 
 const CreateItem: FC = () => {
   const navigation = useNavigation();
@@ -41,6 +42,8 @@ const CreateItem: FC = () => {
           value={listTitle}
           style={styles.input}
         />
+
+        <AppImagePicker />
 
         <TouchableOpacity onPress={handleCreateItem} style={styles.button}>
           <Text>Create list</Text>

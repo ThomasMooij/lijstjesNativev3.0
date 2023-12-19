@@ -1,91 +1,63 @@
-import React, { FC, useState, useEffect } from 'react';
-import { TouchableOpacity, Image, StyleSheet, Platform, PermissionsAndroid, Alert } from 'react-native';
-import ImagePicker, { ImagePickerResponse, ImagePickerOptions } from 'react-native-image-picker';
-import colors from '../../../utils/colors'; // Importing colors file
+import React, { useState } from 'react';
+import { Button, Image, View } from 'react-native';
+import { launchImageLibrary, launchCamera, ImagePickerResponse, ImageLibraryOptions, CameraOptions } from 'react-native-image-picker';
 
-interface ImagePickerProps {
-  onImageSelected: (imageUri: string) => void;
-}
+const AppImagePicker: React.FC = () => {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-const AppImagePicker: FC<ImagePickerProps> = ({ onImageSelected }) => {
-  const [selectedImage, setSelectedImage] = useState<string>('');
-
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS === 'android') {
-        await requestCameraPermission();
-      }
-    })();
-  }, []);
-
-  const requestCameraPermission = async () => {
-    try {
-      const rationale: PermissionsAndroid.PermissionStatus = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        {
-          title: 'Permission to access storage',
-          message: 'App needs access to your storage to upload images.',
-          buttonPositive: 'OK',
-        }
-      );
-
-      if (rationale !== PermissionsAndroid.RESULTS.GRANTED) {
-        Alert.alert('Permission denied.');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
-  const pickImage = () => {
-    const options: ImagePickerOptions = {
+  const openImagePicker = () => {
+    const options: ImageLibraryOptions = {
       mediaType: 'photo',
-      quality: 1,
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
     };
 
-    ImagePicker.launchImageLibrary(options, (response) => {
-      if (!response.didCancel && response.uri) {
-        const pickedImage = response as ImagePickerResponse;
-        setSelectedImage(pickedImage.uri);
-        onImageSelected(pickedImage.uri); 
+    launchImageLibrary(options, (response: ImagePickerResponse) => {
+      if (response.error) {
+        console.log('Image picker error: ', response.error);
+      } else if (!response.didCancel) {
+        let imageUri = response.uri || (response.assets?.[0]?.uri ?? null);
+        setSelectedImage(imageUri);
+      }
+    });
+  };
+
+  const handleCameraLaunch = () => {
+    const options: CameraOptions = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchCamera(options, (response: ImagePickerResponse) => {
+      if (response.error) {
+        console.log('Camera Error: ', response.error);
+      } else if (!response.didCancel) {
+        let imageUri = response.uri || (response.assets?.[0]?.uri ?? null);
+        setSelectedImage(imageUri);
       }
     });
   };
 
   return (
-    <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
-      {selectedImage ? (
-        <Image source={{ uri: selectedImage }} style={styles.imagePreview} />
-      ) : (
-        <Image source={require('../../assets/image-placeholder.png')} style={styles.imagePlaceholder} />
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      {selectedImage && (
+        <Image
+          source={{ uri: selectedImage }}
+          style={{ width: '100%', height: 300 }}
+          resizeMode="contain"
+        />
       )}
-    </TouchableOpacity>
+      <View style={{ marginTop: 20 }}>
+        <Button title="Choose from Device" onPress={openImagePicker} />
+      </View>
+      <View style={{ marginTop: 20 }}>
+        <Button title="Open Camera" onPress={handleCameraLaunch} />
+      </View>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  imagePicker: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: colors.INACTIVE_CONTRAST,
-    backgroundColor: colors.PRIMARY,
-    width: '100%',
-    height: 200,
-    borderRadius: 10,
-    overflow: 'hidden',
-    marginBottom: 10,
-  },
-  imagePreview: {
-    width: '100%',
-    height: '100%',
-  },
-  imagePlaceholder: {
-    width: 50,
-    height: 50,
-    resizeMode: 'contain',
-    tintColor: colors.INACTIVE_CONTRAST,
-  },
-});
 
 export default AppImagePicker;
