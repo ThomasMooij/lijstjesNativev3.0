@@ -25,6 +25,7 @@
 
 ** Nu kunt u in de client folder van de app npx react-native run-android uitvoeren en dan bouwt hij de app. Kies ANDROID als operating system
 
+** run "react-native-doctor" in de terminal om te zien wat u mist mocht de app niet werken. 
 
 
 ## Zie documentatie: https://reactnative.dev/docs/environment-setup
