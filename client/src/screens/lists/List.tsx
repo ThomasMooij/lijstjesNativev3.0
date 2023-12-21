@@ -4,6 +4,7 @@ import colors from '../../../utils/colors'; // Importing colors file
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ListType } from '../../@types/ListType';
 import { useNavigation } from '@react-navigation/native';
+import { useListContext } from '../../context/ListContext';
 
 interface Props {
   list: ListType; 
@@ -12,6 +13,8 @@ interface Props {
 }
 
 const List: FC<Props> = ({ list, expandedList, setExpandedList}) => {
+
+  const {refetchLists} = useListContext();
 
   const navigation = useNavigation<any>();
 

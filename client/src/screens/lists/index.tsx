@@ -8,6 +8,7 @@ import { GET_USER_LISTS } from '../../graphql/queries';
 import List from './List';
 import CreateListButton from '../../components/utils/buttons/CreateListButton';
 import FriendsListButton from '../../components/utils/buttons/FriendsListsButton';
+import { ListProvider } from '../../context/ListContext';
 
 interface ListResponse {
   getAllLists: ListType[];
@@ -15,7 +16,7 @@ interface ListResponse {
 
 const Lists: FC = () => {
   const userId = '6570be040604e11dbed840ec'; 
-  const { loading, error, data } = useQuery<ListResponse>(GET_USER_LISTS, {
+  const { loading, error, data, refetch } = useQuery<ListResponse>(GET_USER_LISTS, {
     variables: { userId },
   });
 
@@ -35,24 +36,36 @@ const Lists: FC = () => {
 
   const lists = data?.getAllLists || [];
 
+  const refetchLists = async () => {
+    try {
+      await refetch();
+    } catch (error) {
+      console.error('Error refetching lists:', error);
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.listsContainer}>
-        <Text style={styles.sectionTitle}>Your Lists</Text>
-        {lists.map((list) => (
-          <List   
-            key={list._id}
-            list={list}
-            expandedList={expandedList}
-            setExpandedList={setExpandedList}
-          />
-        ))}
+    <ListProvider refetchLists={refetchLists}>
+      <View style={styles.container}>
+        <View style={styles.listsContainer}>
+          <Text style={styles.sectionTitle}>Your Lists</Text>
+          {lists.map((list) => (
+            
+              <List   
+                key={list._id}
+                list={list}
+                expandedList={expandedList}
+                setExpandedList={setExpandedList}
+              />
+          
+          ))}
+        </View>
+        <View style={styles.sideButtonsContainer}>
+        <CreateListButton onPress={handleCreateListPress}/>
+        <FriendsListButton onPress={handleFriendsListPress} />
+        </View>
       </View>
-      <View style={styles.sideButtonsContainer}>
-      <CreateListButton onPress={handleCreateListPress}/>
-      <FriendsListButton onPress={handleFriendsListPress} />
-      </View>
-    </View>
+    </ListProvider>
   );
 };
 

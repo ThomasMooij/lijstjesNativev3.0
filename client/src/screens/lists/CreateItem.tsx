@@ -4,28 +4,30 @@ import { useNavigation } from '@react-navigation/native';
 import { CREATE_ITEM_MUTATION } from '../../graphql/itemQueries';
 import { useMutation } from '@apollo/client';
 import AppImagePicker from '../../components/utils/AppImagePicker';
+import { useListContext } from '../../context/ListContext';
 
 const CreateItem: FC = () => {
   const navigation = useNavigation();
   const userId = '6570be040604e11dbed840ec'; 
+  const { refetchLists } = useListContext(); 
 
-  const [listTitle, setListTitle] = useState('');
+  const [ListName, setListName] = useState('');
 
   const [CreateItemMutation] = useMutation(CREATE_ITEM_MUTATION);
 
   const handleCreateItem = async () => {
     try {
-      console.log("Submitting form with title:", listTitle);
+      console.log("Submitting form with title:", ListName);
 
       await CreateItemMutation({
         variables: {
           input: {
-            title: listTitle,
+            title: ListName,
             userId: userId,
           },
         },
       });
-
+      refetchLists();
       navigation.goBack();
     } catch (error) {
       console.error('Error creating list:', error);
@@ -38,15 +40,15 @@ const CreateItem: FC = () => {
         <Text>Lists name</Text>
         <TextInput
           placeholder="Enter list name"
-          onChangeText={(text) => setListTitle(text)}
-          value={listTitle}
+          onChangeText={(text) => setListName(text)}
+          value={ListName}
           style={styles.input}
         />
 
         <AppImagePicker />
 
         <TouchableOpacity onPress={handleCreateItem} style={styles.button}>
-          <Text>Create list</Text>
+          <Text>Create item</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
